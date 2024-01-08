@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+  <title>MetaDesign Task</title>
+</head>
+<body>
+
+<div class="container ms-auto mt-5">
+  <div class="row">
+    <div class="col-12">
+        <div class="d-flex gap-3 justify-content-between">
+            <h4 class="text-center flex-grow-1">Upcoming Projects</h4>
+      
+
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#todoModal">
+                <i class="fa-solid fa-square-plus"></i>
+            </button>
+      
+        </div>
+
+      <ul class="list-group mt-4" id="todoList">
+       
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="todoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="todoModalLabel">To-Do Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true text-danger"><i class="fa-solid fa-square-xmark"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form id="todoForm">
+          <div class="form-group">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/></svg></span>
+                <input type="text" class="form-control" id="userName" placeholder="Enter your name" required>
+              </div>
+           
+          </div>
+          <div class="form-group">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-signature"></i></span>
+                <input type="text" class="form-control" id="nickname" placeholder="Enter your nickname" required>
+              </div>
+           
+          </div>
+          <div class="form-group">
+            
+            <input placeholder="date" type="date" class="form-control" id="date" required>
+          </div>
+        
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+           
+            <button type="submit" class="btn btn-success">Save</button>
+          </div>
+         
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalLabel">Task Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fa-solid fa-square-xmark"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="">What would you like to do with this task?</h5>
+      </div>
+     
+      <div class="modal-footer">
+      
+        <button type="button" class="btn btn-danger" onclick="performAction('delete')"> <i class="fa-regular fa-trash-can"></i> Delete</button>
+               
+        <button type="button" class="btn btn-success" onclick="performAction('markAsDone')"><i class="fa-regular fa-circle-check"></i> Mark as Done</button>
+      
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script>
+  const button = document.querySelector('#button');
+  const tooltip = document.querySelector('#tooltip');
+
+  Popper.createPopper(button, tooltip, {
+    placement: 'left',
+  });
+</script>
+<script>
+ 
+  document.getElementById('todoForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+   
+    var userName = document.getElementById('userName').value;
+    var date = document.getElementById('date').value;
+    var nickname = document.getElementById('nickname').value;
+
+   
+    var taskElement = document.createElement('li');
+    taskElement.className = 'list-group-item d-flex justify-content-between align-items-center';
+    taskElement.innerHTML = `
+    <div class='d-flex flex-column mb-1'>
+      <h6>${userName}</h6>
+  
+      <div class='d-flex'>
+     
+      <p class='mr-3'> ${date}</p> | 
+      <p class='ml-3'>${nickname}</p>
+       
+      </div>
+      </div>
+      
+      <button type="button" class="btn btn-outline-lite btn-sm ml-1" onclick="openConfirmationModal(this)">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+    `;
+
+   
+    document.getElementById('todoList').appendChild(taskElement);
+
+  
+    document.getElementById('userName').value = '';
+    document.getElementById('date').value = '';
+    document.getElementById('nickname').value = '';
+
+
+    $('#todoModal').modal('hide');
+  });
+
+ 
+  var currentTaskElement;
+  function openConfirmationModal(buttonElement) {
+    currentTaskElement = buttonElement.parentElement;
+    $('#confirmationModal').modal('show');
+  }
+
+  function performAction(action) {
+    if (action === 'delete') {
+      currentTaskElement.remove();
+    } else if (action === 'markAsDone') {
+  
+      currentTaskElement.innerHTML += '<i class="fa-solid fa-circle-check text-success"></i>';
+    }
+    $('#confirmationModal').modal('hide');
+  }
+
+
+</script>
+
+
+</body>
+</html>
